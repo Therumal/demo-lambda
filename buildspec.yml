@@ -1,0 +1,34 @@
+version: 0.2
+
+phases:
+    install:
+        runtime-versions:
+            dotnet: 8.0
+        commands:
+            - echo Installing SAM CLI and dependencies...
+            - pip install aws-sam-cli --quiet
+            - dotnet --version
+            - echo Installing Lamda Tools....
+            - dotnet tool install -g Amazon.Lambda.tools
+            - export PATH="$PATH:/root/.dotnet/tools"
+    pre_build:
+        commands:
+            - echo Restoring .NET dependencies...
+            - dotnet restore
+    build:
+        commands:
+            - echo Building .NET Lambda project..
+            - dotnet build -c Release
+            - echo Publishing .NET project to build output directory..
+            - dotnet publish -c Release -o ./publish
+    post_build:
+        commands:
+            - echo Packaging Lambda function using AWS SAM..
+            - sam package \
+                --template-file serverless.template \
+                --s3-bucket demo-bucket07062025 \
+                --output-template-file packaged-template.yaml
+            - echo Build and package completed
+artifacts:
+    files:
+        - packaged-template.yaml
