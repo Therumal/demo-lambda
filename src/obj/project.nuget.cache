@@ -1,0 +1,15 @@
+{
+  "version": 2,
+  "dgSpecHash": "/o5D+7frqdE=",
+  "success": true,
+  "projectFilePath": "C:\\Project\\GitProjects\\demo-lambda\\demo\\src\\demo.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\therumal_sp\\.nuget\\packages\\amazon.lambda.core\\2.5.0\\amazon.lambda.core.2.5.0.nupkg.sha512",
+    "C:\\Users\\therumal_sp\\.nuget\\packages\\amazon.lambda.serialization.systemtextjson\\2.4.4\\amazon.lambda.serialization.systemtextjson.2.4.4.nupkg.sha512",
+    "C:\\Users\\therumal_sp\\.nuget\\packages\\amazon.lambda.sqsevents\\2.2.0\\amazon.lambda.sqsevents.2.2.0.nupkg.sha512",
+    "C:\\Users\\therumal_sp\\.nuget\\packages\\awssdk.core\\4.0.0.7\\awssdk.core.4.0.0.7.nupkg.sha512",
+    "C:\\Users\\therumal_sp\\.nuget\\packages\\awssdk.simplenotificationservice\\4.0.0.5\\awssdk.simplenotificationservice.4.0.0.5.nupkg.sha512",
+    "C:\\Users\\therumal_sp\\.nuget\\packages\\microsoft.netcore.app.crossgen2.win-x64\\8.0.12\\microsoft.netcore.app.crossgen2.win-x64.8.0.12.nupkg.sha512"
+  ],
+  "logs": []
+}

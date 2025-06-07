@@ -1,0 +1,103 @@
+{
+  "AWSTemplateFormatVersion" : "2010-09-09",
+  "Transform" : "AWS::Serverless-2016-10-31",
+  "Description" : "Starting template for an AWS Serverless Application.",
+  "Globals":{
+    "Function":{
+    "Timeout": 10,
+    "Runtime": "dotnet8",
+    "MemorySize": 256,
+    "Tracing": "Active"
+    }
+  },
+  "Parameters" : {
+  },
+  "Resources" : {
+    "LambdaExecutionRole":
+    {
+        "Type": "AWS::IAM::Role",
+        "Properties":{
+            "RoleName": "LambdaSQSToSNSExecutionRole",
+            "AssumeRolePolicyDocument":{
+                "Version": "2012-10-17",
+                "Statement": [
+                {
+                    "Effect": "Allow",
+                    "Principal":{
+                        "Service": "lambda.amazonaws.com"
+                    },
+                    "Action": "sts:AssumeRole"
+                }
+                ]
+            },
+            "Policies": [
+                {
+                    "PolicyName": "AllowCloudWatchLogs",
+                    "PolicyDocument": {
+                        "Version": "2012-10-17",
+                        "Statement": [
+                            {
+                                "Effect": "Allow",
+                                "Action": [
+                                    "logs:CreateLogGroup",
+                                    "logs:CreateLogStream",
+                                    "logs:PutLogEvents"
+                                ],
+                                "Resource": "*"
+                            }
+                        ]
+                    }
+                },
+                {
+                    "PolicyName": "AllowSqsandSns",
+                    "PolicyDocument": {
+                        "Version": "2012-10-17",
+                        "Statement": [
+                            {
+                                "Effect": "Allow",
+                                "Action": [
+                                    "sns:Publish"
+                                ],
+                                "Resource": "arn:aws:sns:ap-south-1:050451398880:demo-UploadsNotificationTopic"
+                            },
+                            {
+                                "Effect": "Allow",
+                                "Action": [
+                                    "sqs:ReceiveMessage",
+                                    "sqs:DeleteMessage",
+                                    "sqs:GetQueueAttributes"
+                                ],
+                                "Resource": "arn:aws:sqs:ap-south-1:050451398880:demo-UploadsNotificationQueue"
+                            }
+                        ]
+                    }
+                }
+            ]
+        }
+    },
+    "LambdaFunction" : {
+      "Type" : "AWS::Serverless::Function",
+      "Properties": {
+        "Handler": "demo::demo.Function::FunctionHandler",
+        "Runtime": "dotnet8",
+        "CodeUri": "src/",
+        "AutoPublishAlias": "live",
+        "Description": "Default function",
+        "MemorySize": 256,
+        "Timeout": 30,
+        "Policies": [ "AWSLambda_FullAccess" ],
+        "Events": {
+            "SQSEvent":{
+                "Type": "SQS",
+                "Properties": {
+                    "Queue": "arn:aws:sqs:ap-south-1:050451398880:demo-UploadsNotificationQueue"
+                }
+            }
+        },
+        "DeploymentPreference":{
+            "Type": "Canary10Percent5Minutes"
+        }
+      }
+    }
+  }
+}
