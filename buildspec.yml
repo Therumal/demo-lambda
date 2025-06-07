@@ -24,7 +24,7 @@ phases:
     post_build:
         commands:
             - echo Packaging Lambda function using AWS SAM..
-            - sam package --template-file serverless.template --s3-bucket demo-bucket07062025 --capabilities CAPABILITY_NAMED_IAM --output-template-file packaged-template.yaml
+            - sam package --template-file serverless.template --s3-bucket demo-bucket07062025 --output-template-file packaged-template.yaml
             - echo Build and package completed
 artifacts:
     files:
